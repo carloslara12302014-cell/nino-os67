@@ -288,6 +288,20 @@ function setupCalculator() {
 }
 
 function guideReply(text) {
+  const arithmetic = text.match(/(-?\d+(?:\.\d+)?)\s*(plus|\+|minus|-|times|×|multiplied by|\bdivided by\b|\/)\s*(-?\d+(?:\.\d+)?)/i);
+  if (arithmetic) {
+    const left = Number(arithmetic[1]);
+    const operator = arithmetic[2].toLowerCase();
+    const right = Number(arithmetic[3]);
+    let result;
+    if (operator === "plus" || operator === "+") result = left + right;
+    else if (operator === "minus" || operator === "-") result = left - right;
+    else if (operator === "times" || operator === "×" || operator === "multiplied by") result = left * right;
+    else result = right === 0 ? null : left / right;
+    if (result === null) return "I can't divide by zero.";
+    const formatted = Number.isInteger(result) ? String(result) : String(Number(result.toFixed(8)));
+    return `${left} ${operator} ${right} equals ${formatted}.`;
+  }
   if (/puzz|brain|think|number|word/i.test(text)) return "Try 2048 for a number puzzle or Word Wipe for a word hunt.";
   if (/cozy|calm|relax|chill|creative|quiet/i.test(text)) return "Little Alchemy 2 is creative, and Eggy Car is a mellow little drive.";
   if (/action|fast|quick|compete|energy|multiplayer/i.test(text)) return "Shell Shockers and Tag are the action picks in Games.";
