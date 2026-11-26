@@ -88,7 +88,7 @@ const templates = {
       <button type="button" class="guide-camera-button" id="guide-paste">Paste image</button>
     </div>
     <form class="guide-form" id="guide-form"><label class="sr-only" for="guide-input">Message the AI assistant</label><input id="guide-input" maxlength="160" placeholder="Ask about the photo..." autocomplete="off"><button type="submit">Send</button></form>
-    <p class="privacy-note">Chat and photo prompts are sent to the AI service for processing. Your photos are not stored by this app.</p></div>`
+    <p class="privacy-note">Chat and photo prompts are sent to the AI service for processing. No sign-in is required. Your photos are not stored by this app.</p></div>`
 };
 
 function buildStartMenu() {
@@ -455,36 +455,40 @@ function setupGuide() {
     chat.scrollTop = chat.scrollHeight;
     input.value = "";
 
-    if (!window.puter?.ai?.chat) {
-      reply.textContent = "The AI service could not load. Reload the page and try again.";
-      input.focus();
-      return;
-    }
-
     try {
       messages.push({ role: "user", content: text });
-      let response;
+      let outgoingMessages = [...messages];
       if (currentImageDataUrl) {
-        response = await window.puter.ai.chat(text, [currentImageDataUrl], false, {
-          model: "gpt-5.4-nano"
-        });
-      } else {
-        response = await window.puter.ai.chat(messages, false, {
-          model: "gpt-5.4-nano"
-        });
+        outgoingMessages[outgoingMessages.length - 1] = {
+          role: "user",
+          content: [
+            { type: "text", text },
+            { type: "image_url", image_url: { url: currentImageDataUrl } }
+          ]
+        };
       }
 
-      const answer = typeof response === "string"
-        ? response
-        : response?.message?.content
-          || response?.text
-          || response?.choices?.[0]?.message?.content
-          || "I could not generate a response. Please try again.";
+      const response = await fetch("https://text.pollinations.ai/openai", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          model: "openai",
+          messages: outgoingMessages,
+          temperature: 0.7
+        })
+      });
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(errorText || `AI service returned ${response.status}`);
+      }
+      const data = await response.json();
+      const answer = data?.choices?.[0]?.message?.content
+        || "I could not generate a response. Please try again.";
       reply.textContent = answer;
       messages.push({ role: "assistant", content: answer });
       currentImageDataUrl = null;
     } catch (_) {
-      reply.textContent = "The AI service could not answer that request. Sign in if prompted, then try again.";
+      reply.textContent = "The AI service is busy or reached its short-term limit. Wait a moment, then try again.";
       messages.pop();
     }
     chat.scrollTop = chat.scrollHeight;
