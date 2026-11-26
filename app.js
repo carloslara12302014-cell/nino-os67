@@ -27,6 +27,7 @@ const appCatalog = [
   { id: "games", name: "Games", glyph: "✦", icon: "icon-games", keywords: "arcade play puzzle action" },
   { id: "tubi", name: "Tubi", glyph: "▶", icon: "icon-tubi", keywords: "movies films streaming tv shows google play" },
   { id: "guide", name: "AI Assistant", glyph: "✳", icon: "icon-guide", keywords: "vision camera photo image paste chat" },
+  { id: "cine", name: "Cine-OS", glyph: "C", icon: "icon-cine", url: "https://cineosweb.github.io/", keywords: "cinema movies video streaming" },
   { id: "opera", name: "Opera GX", glyph: "O", icon: "icon-opera", url: "https://www.opera.com/gx", keywords: "browser web gaming" },
   { id: "google", name: "Google Search", glyph: "G", icon: "icon-google", url: "https://www.google.com/", keywords: "search web internet" }
 ];
