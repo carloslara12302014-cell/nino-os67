@@ -78,8 +78,8 @@ const templates = {
       <a href="https://tubitv.com/" target="_blank" rel="noopener noreferrer"><span class="site-icon site-red">▶</span><strong>Tubi website</strong><small>Watch from your browser</small><span class="row-arrow">↗</span></a>
     </div>
     <p class="privacy-note">These links open in new tabs. App installation and streaming availability depend on your device, region, account, and network permissions.</p></div>`,
-  guide: `<div class="guide-wrap"><div class="app-hero"><span class="mini-label">ON-DEVICE VISION AI</span><h2>AI Assistant</h2><p>Take a photo or paste an image. The first image may take a moment to download the on-device vision model.</p></div>
-    <div class="guide-chat" id="guide-chat" aria-live="polite"><div class="guide-message">Hi! Add a photo, then ask me what you are looking at.</div></div>
+  guide: `<div class="guide-wrap"><div class="app-hero"><span class="mini-label">CHATGPT-STYLE AI</span><h2>AI Assistant</h2><p>Ask any question or attach a photo. The assistant can remember this chat and respond with AI.</p></div>
+    <div class="guide-chat" id="guide-chat" aria-live="polite"><div class="guide-message">Hi! Ask me anything, or add a photo and tell me what you want to know.</div></div>
     <div class="guide-image-tools">
       <label class="guide-camera-button" for="guide-camera">📷 Take photo</label>
       <input id="guide-camera" type="file" accept="image/*" capture="environment" hidden>
@@ -88,7 +88,7 @@ const templates = {
       <button type="button" class="guide-camera-button" id="guide-paste">Paste image</button>
     </div>
     <form class="guide-form" id="guide-form"><label class="sr-only" for="guide-input">Message the AI assistant</label><input id="guide-input" maxlength="160" placeholder="Ask about the photo..." autocomplete="off"><button type="submit">Send</button></form>
-    <p class="privacy-note">Image analysis runs in this browser. Photos are not uploaded or stored by this app.</p></div>`
+    <p class="privacy-note">Chat and photo prompts are sent to the AI service for processing. Your photos are not stored by this app.</p></div>`
 };
 
 function buildStartMenu() {
@@ -288,30 +288,6 @@ function setupCalculator() {
   });
 }
 
-function guideReply(text) {
-  const arithmetic = text.match(/(-?\d+(?:\.\d+)?)\s*(plus|\+|minus|-|times|×|multiplied by|\bdivided by\b|\/)\s*(-?\d+(?:\.\d+)?)/i);
-  if (arithmetic) {
-    const left = Number(arithmetic[1]);
-    const operator = arithmetic[2].toLowerCase();
-    const right = Number(arithmetic[3]);
-    let result;
-    if (operator === "plus" || operator === "+") result = left + right;
-    else if (operator === "minus" || operator === "-") result = left - right;
-    else if (operator === "times" || operator === "×" || operator === "multiplied by") result = left * right;
-    else result = right === 0 ? null : left / right;
-    if (result === null) return "I can't divide by zero.";
-    const formatted = Number.isInteger(result) ? String(result) : String(Number(result.toFixed(8)));
-    return `${left} ${operator} ${right} equals ${formatted}.`;
-  }
-  if (/puzz|brain|think|number|word/i.test(text)) return "Try 2048 for a number puzzle or Word Wipe for a word hunt.";
-  if (/cozy|calm|relax|chill|creative|quiet/i.test(text)) return "Little Alchemy 2 is creative, and Eggy Car is a mellow little drive.";
-  if (/action|fast|quick|compete|energy|multiplayer/i.test(text)) return "Shell Shockers and Tag are the action picks in Games.";
-  if (/opera|gx|browser/i.test(text)) return "Open the Opera GX desktop shortcut for Opera's official site. This demo doesn't install or control a browser.";
-  if (/google|search|web/i.test(text)) return "Use the Google Search shortcut or the taskbar search to search the web.";
-  if (/school|blocked|filter|bypass|unblock/i.test(text)) return "I can't help bypass school filters or device rules. Use games and websites only where permitted.";
-  return "I'm a local demo with a few built-in suggestions. Ask for something cozy, a puzzle, or action.";
-}
-
 function setupGuide() {
   const form = document.querySelector("#guide-form");
   const input = document.querySelector("#guide-input");
@@ -320,8 +296,13 @@ function setupGuide() {
   const imageInput = document.querySelector("#guide-image");
   const pasteButton = document.querySelector("#guide-paste");
   let currentImage = null;
+  let currentImageDataUrl = null;
   let visionModel = null;
   let modelLoading = null;
+  const messages = [{
+    role: "system",
+    content: "You are a helpful, accurate AI assistant inside an iPad-style app. Answer any normal question clearly. Do not claim to be a local demo."
+  }];
 
   function loadScript(src) {
     if (document.querySelector(`script[src="${src}"]`)) return Promise.resolve();
@@ -370,6 +351,12 @@ function setupGuide() {
     }
 
     const url = URL.createObjectURL(file);
+    currentImageDataUrl = await new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = () => reject(new Error("The image could not be read."));
+      reader.readAsDataURL(file);
+    });
     const image = new Image();
     image.src = url;
     image.alt = "Attached photo";
@@ -453,19 +440,54 @@ function setupGuide() {
     chat.dataset.pasteReady = "true";
   }
 
-  form.addEventListener("submit", (event) => {
+  form.addEventListener("submit", async (event) => {
     event.preventDefault();
     const text = input.value.trim();
     if (!text) return;
+
     const userMessage = document.createElement("div");
     userMessage.className = "guide-message user-guide-message";
     userMessage.textContent = text;
     const reply = document.createElement("div");
     reply.className = "guide-message";
-    reply.textContent = guideReply(text);
+    reply.textContent = "Thinking...";
     chat.append(userMessage, reply);
     chat.scrollTop = chat.scrollHeight;
     input.value = "";
+
+    if (!window.puter?.ai?.chat) {
+      reply.textContent = "The AI service could not load. Reload the page and try again.";
+      input.focus();
+      return;
+    }
+
+    try {
+      messages.push({ role: "user", content: text });
+      let response;
+      if (currentImageDataUrl) {
+        response = await window.puter.ai.chat(text, [currentImageDataUrl], false, {
+          model: "gpt-5.4-nano"
+        });
+      } else {
+        response = await window.puter.ai.chat(messages, false, {
+          model: "gpt-5.4-nano"
+        });
+      }
+
+      const answer = typeof response === "string"
+        ? response
+        : response?.message?.content
+          || response?.text
+          || response?.choices?.[0]?.message?.content
+          || "I could not generate a response. Please try again.";
+      reply.textContent = answer;
+      messages.push({ role: "assistant", content: answer });
+      currentImageDataUrl = null;
+    } catch (_) {
+      reply.textContent = "The AI service could not answer that request. Sign in if prompted, then try again.";
+      messages.pop();
+    }
+    chat.scrollTop = chat.scrollHeight;
     input.focus();
   });
 }
