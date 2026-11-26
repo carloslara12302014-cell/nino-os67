@@ -26,7 +26,7 @@ const appCatalog = [
   { id: "settings", name: "Settings", glyph: "⚙", icon: "icon-settings", keywords: "personalize wallpaper" },
   { id: "games", name: "Games", glyph: "✦", icon: "icon-games", keywords: "arcade play puzzle action" },
   { id: "tubi", name: "Tubi", glyph: "▶", icon: "icon-tubi", keywords: "movies films streaming tv shows google play" },
-  { id: "guide", name: "Play Guide", glyph: "✳", icon: "icon-guide", keywords: "helper suggestions chat" },
+  { id: "guide", name: "AI Assistant", glyph: "✳", icon: "icon-guide", keywords: "vision camera photo image paste chat" },
   { id: "opera", name: "Opera GX", glyph: "O", icon: "icon-opera", url: "https://www.opera.com/gx", keywords: "browser web gaming" },
   { id: "google", name: "Google Search", glyph: "G", icon: "icon-google", url: "https://www.google.com/", keywords: "search web internet" }
 ];
@@ -77,10 +77,17 @@ const templates = {
       <a href="https://tubitv.com/" target="_blank" rel="noopener noreferrer"><span class="site-icon site-red">▶</span><strong>Tubi website</strong><small>Watch from your browser</small><span class="row-arrow">↗</span></a>
     </div>
     <p class="privacy-note">These links open in new tabs. App installation and streaming availability depend on your device, region, account, and network permissions.</p></div>`,
-  guide: `<div class="guide-wrap"><div class="app-hero"><span class="mini-label">LOCAL DEMO · NOT A LIVE AI</span><h2>Play Guide</h2><p>Tell the guide your mood and get a suggestion from this page. Messages are not sent or stored.</p></div>
-    <div class="guide-chat" id="guide-chat" aria-live="polite"><div class="guide-message">Hi! Want something cozy, a quick puzzle, or an action game?</div></div>
-    <form class="guide-form" id="guide-form"><label class="sr-only" for="guide-input">Message the play guide</label><input id="guide-input" maxlength="160" placeholder="What are you in the mood for?" autocomplete="off"><button type="submit">Send</button></form>
-    <p class="privacy-note">I can't help bypass school filters or device rules. Play only where permitted. <a href="https://icons8.com/" target="_blank" rel="noopener noreferrer">Chat icon by Icons8</a>.</p></div>`
+  guide: `<div class="guide-wrap"><div class="app-hero"><span class="mini-label">ON-DEVICE VISION AI</span><h2>AI Assistant</h2><p>Take a photo or paste an image. The first image may take a moment to download the on-device vision model.</p></div>
+    <div class="guide-chat" id="guide-chat" aria-live="polite"><div class="guide-message">Hi! Add a photo, then ask me what you are looking at.</div></div>
+    <div class="guide-image-tools">
+      <label class="guide-camera-button" for="guide-camera">📷 Take photo</label>
+      <input id="guide-camera" type="file" accept="image/*" capture="environment" hidden>
+      <label class="guide-camera-button" for="guide-image">🖼 Choose image</label>
+      <input id="guide-image" type="file" accept="image/*" hidden>
+      <button type="button" class="guide-camera-button" id="guide-paste">Paste image</button>
+    </div>
+    <form class="guide-form" id="guide-form"><label class="sr-only" for="guide-input">Message the AI assistant</label><input id="guide-input" maxlength="160" placeholder="Ask about the photo..." autocomplete="off"><button type="submit">Send</button></form>
+    <p class="privacy-note">Image analysis runs in this browser. Photos are not uploaded or stored by this app.</p></div>`
 };
 
 function buildStartMenu() {
@@ -128,7 +135,7 @@ function openApp(appId) {
     settings: "Settings",
     games: "Games",
     tubi: "Tubi",
-    guide: "Play Guide"
+    guide: "AI Assistant"
   };
   document.querySelector("#window-title").textContent = appNames[appId];
   document.querySelector("#window-app-icon").textContent = app.glyph;
@@ -294,6 +301,143 @@ function setupGuide() {
   const form = document.querySelector("#guide-form");
   const input = document.querySelector("#guide-input");
   const chat = document.querySelector("#guide-chat");
+  const camera = document.querySelector("#guide-camera");
+  const imageInput = document.querySelector("#guide-image");
+  const pasteButton = document.querySelector("#guide-paste");
+  let currentImage = null;
+  let visionModel = null;
+  let modelLoading = null;
+
+  function loadScript(src) {
+    if (document.querySelector(`script[src="${src}"]`)) return Promise.resolve();
+    return new Promise((resolve, reject) => {
+      const script = document.createElement("script");
+      script.src = src;
+      script.onload = resolve;
+      script.onerror = () => reject(new Error("The vision model could not be downloaded."));
+      document.head.append(script);
+    });
+  }
+
+  async function getVisionModel() {
+    if (visionModel) return visionModel;
+    if (!modelLoading) {
+      modelLoading = Promise.all([
+        loadScript("https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js"),
+        loadScript("https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd@2.2.3/dist/coco-ssd.min.js")
+      ]).then(() => window.cocoSsd.load({ base: "lite_mobilenet_v2" })).then((model) => {
+        visionModel = model;
+        return model;
+      }).catch((error) => {
+        modelLoading = null;
+        throw error;
+      });
+    }
+    return modelLoading;
+  }
+
+  function appendReply(text) {
+    const reply = document.createElement("div");
+    reply.className = "guide-message";
+    reply.textContent = text;
+    chat.append(reply);
+    chat.scrollTop = chat.scrollHeight;
+  }
+
+  async function handleImage(file) {
+    if (!file || !file.type.startsWith("image/")) {
+      appendReply("Please choose or paste an image file.");
+      return;
+    }
+    if (file.size > 20 * 1024 * 1024) {
+      appendReply("That image is larger than 20 MB. Please choose a smaller photo.");
+      return;
+    }
+
+    const url = URL.createObjectURL(file);
+    const image = new Image();
+    image.src = url;
+    image.alt = "Attached photo";
+    image.className = "guide-attached-image";
+    await new Promise((resolve, reject) => {
+      image.onload = resolve;
+      image.onerror = () => reject(new Error("The image could not be opened."));
+    });
+    currentImage = image;
+
+    const userMessage = document.createElement("div");
+    userMessage.className = "guide-message user-guide-message guide-image-message";
+    userMessage.append(image);
+    chat.append(userMessage);
+    appendReply("Analyzing the photo...");
+    chat.scrollTop = chat.scrollHeight;
+
+    try {
+      const model = await getVisionModel();
+      const predictions = await model.detect(image);
+      const useful = predictions
+        .filter((item) => item.score >= 0.45)
+        .sort((a, b) => b.score - a.score)
+        .slice(0, 5);
+
+      let barcodeText = "";
+      if ("BarcodeDetector" in window) {
+        try {
+          const detector = new window.BarcodeDetector();
+          const barcodes = await detector.detect(image);
+          barcodeText = barcodes.map((item) => item.rawValue).filter(Boolean).join(", ");
+        } catch (_) {}
+      }
+
+      if (useful.length) {
+        const objects = useful.map((item) => `${item.class} (${Math.round(item.score * 100)}%)`).join(", ");
+        appendReply(`I found: ${objects}.${barcodeText ? ` I also detected a barcode or QR code containing: ${barcodeText}` : ""}`);
+      } else if (barcodeText) {
+        appendReply(`I detected a barcode or QR code containing: ${barcodeText}`);
+      } else {
+        appendReply("I opened the photo, but could not identify a common object with confidence.");
+      }
+    } catch (error) {
+      appendReply("Photo ready, but the vision model could not load. Check your connection and try again.");
+    }
+  }
+
+  async function readClipboardImage() {
+    if (!navigator.clipboard?.read) {
+      appendReply("Use Choose image or long-press and paste from your clipboard.");
+      return;
+    }
+    try {
+      const items = await navigator.clipboard.read();
+      for (const item of items) {
+        const imageType = item.types.find((type) => type.startsWith("image/"));
+        if (imageType) {
+          await handleImage(await item.getType(imageType));
+          return;
+        }
+      }
+      appendReply("The clipboard does not contain an image.");
+    } catch (_) {
+      appendReply("Paste permission was not granted. Use Choose image or Take photo instead.");
+    }
+  }
+
+  camera.addEventListener("change", () => handleImage(camera.files[0]));
+  imageInput.addEventListener("change", () => handleImage(imageInput.files[0]));
+  pasteButton.addEventListener("click", readClipboardImage);
+  if (!chat.dataset.pasteReady) {
+    document.addEventListener("paste", (event) => {
+      if (!appWindow.hidden && event.target.closest && event.target.closest(".guide-wrap")) {
+        const imageItem = Array.from(event.clipboardData?.items || []).find((item) => item.type.startsWith("image/"));
+        if (imageItem) {
+          event.preventDefault();
+          handleImage(imageItem.getAsFile());
+        }
+      }
+    });
+    chat.dataset.pasteReady = "true";
+  }
+
   form.addEventListener("submit", (event) => {
     event.preventDefault();
     const text = input.value.trim();
