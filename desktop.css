@@ -1,15 +1,20 @@
 :root {
-  color-scheme: light;
-  --ink: #203047;
-  --muted: #64758c;
-  --line: #dce5f0;
-  --blue: #2879c7;
-  --surface: rgba(249, 252, 255, .94);
+  color-scheme: dark;
+  --ink: #18253a;
+  --muted: #718096;
+  --line: rgba(255, 255, 255, .16);
+  --blue: #0a84ff;
+  --glass: rgba(247, 250, 255, .94);
 }
-
 * { box-sizing: border-box; }
 html, body { width: 100%; height: 100%; margin: 0; }
-body { overflow: hidden; color: var(--ink); font: 14px/1.45 "Segoe UI Variable", "Segoe UI", Arial, sans-serif; }
+body {
+  overflow: hidden;
+  color: #fff;
+  font: 16px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  -webkit-text-size-adjust: 100%;
+  touch-action: manipulation;
+}
 button, input, textarea { font: inherit; }
 button, a { -webkit-tap-highlight-color: transparent; }
 button { color: inherit; }
@@ -19,304 +24,363 @@ a { color: inherit; text-decoration: none; }
 
 .desktop {
   position: relative;
-  height: calc(100vh - 52px);
+  height: 100dvh;
   min-height: 360px;
   overflow: hidden;
-  padding: 25px 28px;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
   background:
-    radial-gradient(ellipse at 72% 68%, rgba(93, 98, 117, .36), transparent 43%),
-    radial-gradient(ellipse at 15% 16%, rgba(52, 55, 66, .75), transparent 49%),
-    linear-gradient(133deg, #22242b 0%, #0c0d12 52%, #191b22 100%);
+    radial-gradient(circle at 78% 18%, rgba(174, 210, 255, .58), transparent 29%),
+    radial-gradient(circle at 18% 78%, rgba(255, 202, 224, .32), transparent 26%),
+    linear-gradient(145deg, #5b8fc7 0%, #78a4cb 34%, #657fa7 68%, #313c61 100%);
   transition: background .35s ease;
 }
-.desktop:before, .desktop:after { content: ""; position: absolute; pointer-events: none; }
+.desktop:before, .desktop:after { content: ""; position: absolute; pointer-events: none; border-radius: 50%; }
 .desktop:before {
-  width: 760px;
-  height: 440px;
-  right: -80px;
-  bottom: -180px;
-  border: 1px solid rgba(216,225,240,.12);
-  border-radius: 50%;
-  transform: rotate(-28deg);
-  box-shadow: 0 -18px 0 -17px rgba(216,225,240,.1), 0 -42px 0 -41px rgba(216,225,240,.08), 0 -68px 0 -67px rgba(216,225,240,.05);
+  width: 76vw;
+  height: 76vw;
+  right: -28vw;
+  top: -42vw;
+  background: radial-gradient(circle at 55% 55%, rgba(255,255,255,.16), transparent 58%);
+  border: 1px solid rgba(255,255,255,.12);
 }
 .desktop:after {
-  width: 520px;
-  height: 300px;
-  right: 3%;
-  bottom: 3%;
-  border-radius: 50%;
-  background: radial-gradient(ellipse, rgba(159,178,212,.12), transparent 68%);
+  width: 55vw;
+  height: 55vw;
+  left: -28vw;
+  bottom: -34vw;
+  background: radial-gradient(circle, rgba(255,255,255,.13), transparent 64%);
 }
 .desktop.blue-wallpaper {
   background:
-    radial-gradient(ellipse at 75% 69%, rgba(116, 188, 239, .9) 0, rgba(91, 158, 219, .45) 26%, transparent 52%),
-    radial-gradient(ellipse at 21% 20%, rgba(236, 250, 255, .95) 0, rgba(183, 226, 249, .7) 31%, transparent 62%),
-    linear-gradient(133deg, #6bb5e8 0%, #368bd0 46%, #2468ad 100%);
+    radial-gradient(circle at 68% 15%, rgba(192, 232, 255, .85), transparent 28%),
+    linear-gradient(145deg, #70b4ef 0%, #3d87cf 48%, #254d85 100%);
 }
-.desktop.blue-wallpaper:before { border-color: rgba(255,255,255,.32); box-shadow: 0 -18px 0 -17px rgba(255,255,255,.26), 0 -42px 0 -41px rgba(255,255,255,.2), 0 -68px 0 -67px rgba(255,255,255,.15); }
-.desktop.blue-wallpaper:after { background: radial-gradient(ellipse, rgba(220,244,255,.38), transparent 68%); }
-.desktop-widgets { position: absolute; z-index: 1; top: 26px; right: 30px; display: flex; align-items: stretch; gap: 10px; color: #f7f8fb; text-align: left; }
-.welcome-widget, .clock-widget { background: rgba(5, 7, 11, .84); border: 1px solid rgba(255,255,255,.13); border-radius: 10px; box-shadow: 0 8px 26px rgba(0,0,0,.24), inset 0 1px rgba(255,255,255,.06); backdrop-filter: blur(18px); }
-.welcome-widget { min-width: 215px; display: flex; align-items: center; gap: 11px; padding: 12px 15px; }
-.widget-spark { width: 30px; height: 30px; display: grid; place-items: center; flex: 0 0 30px; color: #f4cf77; background: rgba(244,207,119,.13); border: 1px solid rgba(244,207,119,.16); border-radius: 8px; font-size: 17px; }
-.welcome-copy { display: flex; flex-direction: column; gap: 2px; }
-.welcome-copy strong { color: #fff; font-size: 12px; font-weight: 600; }
-.welcome-copy small { color: #a7adba; font-size: 9px; }
-.clock-widget { min-width: 145px; display: flex; flex-direction: column; align-items: flex-start; padding: 10px 14px; }
-.clock-label { display: flex; align-items: center; gap: 6px; color: #9da5b3; font-size: 8px; font-weight: 700; letter-spacing: 1.15px; }
-.clock-label i { width: 5px; height: 5px; border-radius: 50%; background: #7fd0a5; box-shadow: 0 0 8px rgba(127,208,165,.65); }
-.clock-widget time { margin-top: 2px; color: #fff; font-size: 23px; font-weight: 300; line-height: 1.2; font-variant-numeric: tabular-nums; }
-.clock-widget > span:last-child { color: #b7bfcc; font-size: 9px; }
+
+.ipad-status-bar {
+  position: absolute;
+  z-index: 3;
+  top: 10px;
+  right: 24px;
+  left: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: rgba(255,255,255,.92);
+  font-size: 12px;
+  text-shadow: 0 1px 4px rgba(20,40,75,.25);
+}
+.ipad-status-time { min-width: 44px; text-align: center; font-size: 13px; }
+.status-icons { display: flex; gap: 9px; align-items: center; font-size: 10px; }
+.status-icons i { font-style: normal; }
+
+.desktop-widgets {
+  position: absolute;
+  z-index: 2;
+  top: 46px;
+  right: 34px;
+  display: flex;
+  gap: 10px;
+  text-align: left;
+}
+.welcome-widget, .clock-widget {
+  background: rgba(45, 68, 101, .34);
+  border: 1px solid rgba(255,255,255,.22);
+  border-radius: 18px;
+  box-shadow: 0 12px 34px rgba(28,48,79,.14), inset 0 1px rgba(255,255,255,.12);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+}
+.welcome-widget { min-width: 230px; display: flex; align-items: center; gap: 12px; padding: 12px 16px; }
+.widget-spark { width: 38px; height: 38px; display: grid; place-items: center; color: #ffe7a3; background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.14); border-radius: 11px; font-size: 21px; }
+.welcome-copy { display: flex; flex-direction: column; }
+.welcome-copy strong { font-size: 14px; }
+.welcome-copy small { margin-top: 2px; color: rgba(255,255,255,.72); font-size: 11px; }
+.clock-widget { min-width: 130px; display: flex; flex-direction: column; align-items: flex-end; padding: 9px 15px; }
+.clock-label { display: none; }
+.clock-widget time { font-size: 25px; line-height: 1.15; font-weight: 600; font-variant-numeric: tabular-nums; }
+.clock-widget > span:last-child { color: rgba(255,255,255,.75); font-size: 11px; }
+
 .desktop-icons {
-  position: relative;
-  z-index: 1;
+  position: absolute;
+  z-index: 2;
+  top: 132px;
+  left: 36px;
   display: grid;
-  grid-auto-flow: column;
-  grid-template-rows: repeat(5, 88px);
-  grid-auto-columns: 90px;
-  width: max-content;
+  grid-template-columns: repeat(5, 104px);
+  grid-auto-rows: 108px;
+  gap: 14px 10px;
 }
 .desktop-shortcut {
-  width: 82px;
-  min-height: 81px;
+  width: 104px;
+  min-height: 108px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 5px;
-  padding: 5px 3px;
-  border: 1px solid transparent;
-  border-radius: 5px;
+  justify-content: flex-start;
+  gap: 8px;
+  padding: 5px 4px;
+  border: 0;
+  border-radius: 14px;
   color: #fff;
   background: transparent;
   text-align: center;
-  text-shadow: 0 1px 3px rgba(12,40,73,.8);
-  font-size: 11px;
+  text-shadow: 0 1px 5px rgba(24,42,72,.7);
+  font-size: 12px;
   cursor: pointer;
 }
-.desktop-shortcut:hover, .desktop-shortcut:focus-visible { background: rgba(223,242,255,.18); border-color: rgba(255,255,255,.38); outline: none; }
-.desktop-shortcut:active { background: rgba(223,242,255,.28); }
-.app-icon { width: 39px; height: 39px; flex: 0 0 39px; display: grid; place-items: center; border: 1px solid rgba(255,255,255,.7); border-radius: 10px; background: linear-gradient(145deg,#fff,#e3edf8); box-shadow: 0 2px 6px rgba(20,54,93,.2); color: #347bc2; font-size: 21px; font-weight: 600; text-shadow: none; }
+.desktop-shortcut:hover, .desktop-shortcut:focus-visible { background: rgba(255,255,255,.12); outline: none; }
+.desktop-shortcut:active { transform: scale(.96); }
+.app-icon { width: 62px; height: 62px; flex: 0 0 62px; display: grid; place-items: center; border: 1px solid rgba(255,255,255,.66); border-radius: 16px; background: linear-gradient(145deg,#fff,#dceafa); box-shadow: 0 8px 18px rgba(22,55,92,.24), inset 0 1px rgba(255,255,255,.75); color: #347bc2; font-size: 31px; font-weight: 650; text-shadow: none; }
 .icon-folder { color: #246eb5; background: linear-gradient(150deg,#fff2c2,#f4c864); }
-.icon-edge { color: #087c9c; background: linear-gradient(145deg,#c7f7e8,#60d0c0 52%,#44a5dc); font: 700 25px Arial,sans-serif; }
+.icon-edge { color: #087c9c; background: linear-gradient(145deg,#c7f7e8,#60d0c0 52%,#44a5dc); font: 700 34px Arial,sans-serif; }
 .icon-store { color: transparent; font-size: 0; background: #fff url("https://logos-world.net/wp-content/uploads/2021/02/App-Store-Logo.png") center / cover no-repeat; }
 .icon-notepad { color: #3677b4; background: linear-gradient(145deg,#fff,#dcecff); }
-.icon-calculator { color: transparent; font-size: 0; background: #f4f4f4 url("https://tse1.mm.bing.net/th/id/OIP.1cg4ErXyTbfnevnHamNuoQHaD4?r=0&w=1200&h=630&rs=1&pid=ImgDetMain&o=7&rm=3") center / cover no-repeat; }
+.icon-calculator { color: #354860; background: linear-gradient(145deg,#f7f9fc,#becbe0); font-size: 28px; }
 .icon-settings { color: #5d7087; background: linear-gradient(145deg,#fff,#e1e9f2); }
 .icon-games { color: transparent; font-size: 0; background: #10131d url("https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/PlayStation_App_Icon.jpg/960px-PlayStation_App_Icon.jpg") center / cover no-repeat; }
-.icon-tubi { color: #fff; background: linear-gradient(145deg,#d9283f,#9e1228); font-size: 19px; }
-.icon-guide { color: transparent; font-size: 0; background: #fff url("https://img.icons8.com/pulsar-line/1200/chatgpt.jpg") center / cover no-repeat; }
-.icon-opera { color: #c33c52; background: linear-gradient(145deg,#fff,#ffe1e7); font-size: 19px; }
-.icon-google { color: #4285f4; background: linear-gradient(145deg,#fff,#f1f5fb); font-size: 21px; }
+.icon-tubi { color: #fff; background: linear-gradient(145deg,#d9283f,#9e1228); font-size: 25px; }
+.icon-guide { color: #fff; background: linear-gradient(145deg,#a88bd8,#6659ae); font-size: 28px; }
+.icon-opera { color: #c33c52; background: linear-gradient(145deg,#fff,#ffe1e7); font-size: 25px; }
+.icon-google { color: #4285f4; background: linear-gradient(145deg,#fff,#f1f5fb); font-size: 29px; }
 
 .app-window {
   position: fixed;
-  z-index: 5;
-  top: 50%;
-  left: 50%;
-  width: min(820px, calc(100vw - 70px));
-  height: min(610px, calc(100vh - 112px));
-  min-height: 340px;
+  z-index: 8;
+  top: 38px;
+  right: 20px;
+  bottom: 104px;
+  left: 20px;
+  width: auto;
+  height: auto;
+  min-height: 300px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  background: var(--surface);
-  border: 1px solid rgba(255,255,255,.9);
-  border-radius: 9px;
-  box-shadow: 0 24px 70px rgba(10,36,68,.4), 0 2px 8px rgba(20,50,80,.2);
-  backdrop-filter: blur(26px);
-  transform: translate(-50%,-50%);
+  background: var(--glass);
+  border: 1px solid rgba(255,255,255,.82);
+  border-radius: 24px;
+  box-shadow: 0 28px 80px rgba(17,37,68,.38), 0 4px 14px rgba(20,50,80,.16);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
 }
-.app-window.is-maximized { top: 7px; left: 7px; width: calc(100vw - 14px); height: calc(100vh - 66px); transform: none; }
-.window-titlebar { height: 43px; flex: 0 0 43px; display: flex; align-items: center; justify-content: space-between; padding-left: 14px; background: rgba(255,255,255,.6); border-bottom: 1px solid rgba(30,60,90,.08); }
-.window-app { display: flex; align-items: center; gap: 9px; color: #35465e; font-size: 12px; }
-.window-app-icon { width: 21px; height: 21px; display: grid; place-items: center; border-radius: 5px; background: #e9f2fc; color: #347bc2; }
-.window-app-icon.app-icon { width: 24px; height: 24px; min-height: 24px; border-radius: 6px; font-size: 14px; }
-.window-app-icon.icon-games, .window-app-icon.icon-guide, .window-app-icon.icon-store, .window-app-icon.icon-calculator { color: transparent; font-size: 0; background-position: center; background-size: cover; background-repeat: no-repeat; }
+.app-window.is-maximized { top: 8px; right: 8px; bottom: 86px; left: 8px; border-radius: 18px; }
+.window-titlebar { height: 54px; flex: 0 0 54px; display: flex; align-items: center; justify-content: space-between; padding: 0 12px 0 18px; background: rgba(255,255,255,.68); border-bottom: 1px solid rgba(30,60,90,.08); }
+.window-app { display: flex; align-items: center; gap: 10px; color: #35465e; font-size: 15px; }
+.window-app-icon { width: 30px; height: 30px; display: grid; place-items: center; border-radius: 8px; background: #e9f2fc; color: #347bc2; }
+.window-app-icon.app-icon { width: 30px; height: 30px; min-height: 30px; border: 0; border-radius: 8px; font-size: 16px; }
+.window-app-icon.icon-games, .window-app-icon.icon-store, .window-app-icon.icon-calculator { background-position: center; background-size: cover; background-repeat: no-repeat; color: transparent; font-size: 0; }
 .window-app-icon.icon-games { background-image: url("https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/PlayStation_App_Icon.jpg/960px-PlayStation_App_Icon.jpg"); }
-.window-app-icon.icon-guide { background-image: url("https://img.icons8.com/pulsar-line/1200/chatgpt.jpg"); }
 .window-app-icon.icon-store { background-image: url("https://logos-world.net/wp-content/uploads/2021/02/App-Store-Logo.png"); }
-.window-app-icon.icon-calculator { background-image: url("https://tse1.mm.bing.net/th/id/OIP.1cg4ErXyTbfnevnHamNuoQHaD4?r=0&w=1200&h=630&rs=1&pid=ImgDetMain&o=7&rm=3"); }
-.taskbar-app-icon.icon-games, .taskbar-app-icon.icon-guide, .taskbar-app-icon.icon-store, .taskbar-app-icon.icon-calculator { width: 27px; height: 27px; display: inline-block; border-radius: 6px; font-size: 0; }
-.window-controls { display: flex; height: 100%; }
-.window-controls button { width: 45px; border: 0; background: transparent; color: #46566b; cursor: pointer; font-size: 15px; }
-.window-controls button:hover { background: rgba(80,110,145,.1); }
-.window-controls .close-window:hover { color: #fff; background: #d83b3b; }
-.app-content { flex: 1; min-height: 0; overflow: auto; background: rgba(249,252,255,.92); }
-.app-toolbar { min-height: 52px; display: flex; align-items: center; gap: 12px; padding: 0 22px; background: rgba(255,255,255,.72); border-bottom: 1px solid #e6edf5; color: #607087; font-size: 12px; }
-.app-toolbar strong { color: #273951; font-size: 14px; }
-.app-muted { color: #77869b; font-size: 11px; }
-.app-page { padding: 26px 30px 32px; }
-.app-hero { padding: 25px 28px; background: linear-gradient(120deg,#edf6ff,#e7f2ff 55%,#f4f3ff); border: 1px solid #dfebf7; border-radius: 8px; }
-.mini-label { color: #3a78b5; font-size: 9px; font-weight: 700; letter-spacing: 1.4px; }
-.app-hero h2, .games-heading h2 { margin: 7px 0 5px; color: #25364c; font-size: 24px; font-weight: 600; letter-spacing: -.5px; }
-.app-hero p { max-width: 550px; margin: 0; color: #63748a; font-size: 12px; line-height: 1.6; }
-.site-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 11px; margin-top: 18px; }
-.site-grid > a { position: relative; min-height: 79px; display: grid; grid-template-columns: 37px 1fr 16px; grid-template-rows: 1fr 1fr; align-items: center; column-gap: 11px; padding: 11px 13px; background: #fff; border: 1px solid #e0e8f1; border-radius: 7px; }
-.site-grid > a:hover, .game-row:hover { background: #f5f9fe; border-color: #b7d3ef; }
-.site-icon { grid-row: 1/3; width: 34px; height: 34px; display: grid; place-items: center; border-radius: 8px; background: #eef4fc; color: #347bc2; font-weight: 700; }
+.window-app-icon.icon-calculator { background: linear-gradient(145deg,#f7f9fc,#becbe0); color: #354860; font-size: 16px; }
+.window-app-icon.icon-guide { background: linear-gradient(145deg,#a88bd8,#6659ae); }
+.window-controls { display: flex; height: 100%; align-items: center; gap: 4px; }
+.window-controls button { width: 44px; height: 44px; border: 0; border-radius: 12px; background: transparent; color: #46566b; cursor: pointer; font-size: 19px; }
+.window-controls button:hover, .window-controls button:active { background: rgba(80,110,145,.1); }
+.window-controls .close-window { color: #c84d57; }
+.app-content { flex: 1; min-height: 0; overflow: auto; background: rgba(249,252,255,.96); }
+.app-toolbar { min-height: 58px; display: flex; align-items: center; gap: 14px; padding: 0 24px; background: rgba(255,255,255,.78); border-bottom: 1px solid #e6edf5; color: #607087; font-size: 14px; }
+.app-toolbar strong { color: #273951; font-size: 16px; }
+.app-muted { color: #77869b; font-size: 12px; }
+.app-page { padding: 28px 34px 36px; }
+.app-hero { padding: 28px 30px; background: linear-gradient(120deg,#edf6ff,#e7f2ff 55%,#f4f3ff); border: 1px solid #dfebf7; border-radius: 14px; }
+.mini-label { color: #3a78b5; font-size: 10px; font-weight: 700; letter-spacing: 1.4px; }
+.app-hero h2, .games-heading h2 { margin: 8px 0 6px; color: #25364c; font-size: 28px; font-weight: 650; letter-spacing: -.5px; }
+.app-hero p { max-width: 650px; margin: 0; color: #63748a; font-size: 14px; line-height: 1.6; }
+.site-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; margin-top: 18px; }
+.site-grid > a { position: relative; min-height: 88px; display: grid; grid-template-columns: 44px 1fr 20px; grid-template-rows: 1fr 1fr; align-items: center; column-gap: 12px; padding: 12px 14px; background: #fff; border: 1px solid #e0e8f1; border-radius: 12px; }
+.site-grid > a:hover { background: #f5f9fe; border-color: #b7d3ef; }
+.site-icon { grid-row: 1/3; width: 44px; height: 44px; display: grid; place-items: center; border-radius: 12px; background: #eef4fc; color: #347bc2; font-weight: 700; }
 .site-purple { color: #7354b8; background: #f0eaff; }.site-orange { color: #c56b34; background: #fff0e4; }.site-green { color: #358762; background: #e5f7ed; }.site-blue { color: #4285f4; background: #eaf2ff; }.site-red { color: #c9273e; background: #ffeaed; }
-.site-grid strong { align-self: end; color: #2a3c53; font-size: 12px; }
-.site-grid small { align-self: start; color: #74839a; font-size: 10px; }
-.row-arrow { color: #5884b3; font-size: 13px; }
-.explorer-layout { height: calc(100% - 52px); min-height: 250px; display: grid; grid-template-columns: 176px 1fr; }
-.explorer-sidebar { display: flex; flex-direction: column; gap: 5px; padding: 20px 12px; color: #5e6f84; background: rgba(243,247,252,.85); border-right: 1px solid #e2eaf3; font-size: 11px; }
-.explorer-sidebar strong { padding: 7px 9px; color: #2d4058; }
-.explorer-sidebar span { padding: 7px 9px; border-radius: 4px; }
-.explorer-sidebar span:hover { background: #e7f0fa; }
-.explorer-content { padding: 24px; }
-.explorer-content h2, .settings-content h2 { margin: 0; color: #2b3c53; font-size: 19px; font-weight: 600; }
-.explorer-content > p { margin: 5px 0 18px; }
-.folder-card { width: 150px; height: 98px; display: inline-flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 3px; margin: 0 9px 10px 0; padding: 12px; background: #fff; border: 1px solid #e1e9f2; border-radius: 7px; text-align: left; cursor: pointer; }
-.folder-card:hover { border-color: #abcbed; background: #f7fbff; }
-.folder-card > span { color: #3b7ebd; font-size: 18px; }
-.folder-card strong { color: #35485f; font-size: 11px; }
-.folder-card small { color: #8190a3; font-size: 9px; }
-.privacy-note { margin: 14px 0 0; color: #7a899c; font-size: 10px; line-height: 1.6; }
+.site-grid strong { align-self: end; color: #2a3c53; font-size: 14px; }
+.site-grid small { align-self: start; color: #74839a; font-size: 12px; }
+.row-arrow { color: #5884b3; font-size: 16px; }
 
-.notepad-toolbar { height: 38px; display: flex; align-items: center; justify-content: space-between; padding: 0 17px; color: #758398; background: #f4f7fb; border-bottom: 1px solid #e2e9f1; font-size: 10px; }
-.notepad-area { width: 100%; height: calc(100% - 38px); min-height: 250px; resize: none; padding: 22px 26px; color: #293b53; background: #fff; border: 0; outline: 0; font: 13px/1.8 "Segoe UI", Arial, sans-serif; }
-.notepad-area::placeholder { color: #98a5b4; }
-.calculator-wrap { width: min(320px,100%); margin: 22px auto; padding: 16px; background: #f1f5fa; border: 1px solid #e0e7ef; border-radius: 8px; }
-.calculator-heading { display: flex; justify-content: space-between; color: #3e5068; font-size: 12px; }
+.explorer-layout { height: calc(100% - 58px); min-height: 250px; display: grid; grid-template-columns: 220px 1fr; }
+.explorer-sidebar { display: flex; flex-direction: column; gap: 6px; padding: 24px 14px; color: #5e6f84; background: rgba(243,247,252,.85); border-right: 1px solid #e2eaf3; font-size: 13px; }
+.explorer-sidebar strong { padding: 10px 12px; color: #2d4058; }
+.explorer-sidebar span { min-height: 44px; display: flex; align-items: center; padding: 8px 12px; border-radius: 8px; }
+.explorer-content { padding: 28px; }
+.explorer-content h2, .settings-content h2 { margin: 0; color: #2b3c53; font-size: 22px; }
+.explorer-content > p { margin: 6px 0 20px; }
+.folder-card { width: 170px; min-height: 112px; display: inline-flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 4px; margin: 0 10px 12px 0; padding: 14px; background: #fff; border: 1px solid #e1e9f2; border-radius: 12px; text-align: left; cursor: pointer; }
+.folder-card:hover { border-color: #abcbed; background: #f7fbff; }
+.folder-card > span { color: #3b7ebd; font-size: 22px; }
+.folder-card strong { color: #35485f; font-size: 13px; }
+.folder-card small { color: #8190a3; font-size: 11px; }
+.privacy-note { margin: 16px 0 0; color: #7a899c; font-size: 11px; line-height: 1.6; }
+
+.notepad-toolbar { height: 44px; display: flex; align-items: center; justify-content: space-between; padding: 0 18px; color: #758398; background: #f4f7fb; border-bottom: 1px solid #e2e9f1; font-size: 12px; }
+.notepad-area { width: 100%; height: calc(100% - 44px); min-height: 250px; resize: none; padding: 24px 28px; color: #293b53; background: #fff; border: 0; outline: 0; font: 15px/1.8 -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; }
+.calculator-wrap { width: min(380px,100%); margin: 24px auto; padding: 18px; background: #f1f5fa; border: 1px solid #e0e7ef; border-radius: 16px; }
+.calculator-heading { display: flex; justify-content: space-between; color: #3e5068; font-size: 14px; }
 .calculator-heading small { color: #8090a3; }
-.calculator-display { display: block; min-height: 74px; padding: 23px 4px 10px; overflow: hidden; color: #203047; text-align: right; font-size: 34px; font-weight: 300; }
-.calculator-keys { display: grid; grid-template-columns: repeat(4,1fr); gap: 5px; }
-.calculator-keys button { min-height: 47px; color: #354860; background: #fff; border: 1px solid #e1e8f0; border-radius: 5px; cursor: pointer; }
-.calculator-keys button:hover { background: #eaf3fc; border-color: #c6dbef; }
+.calculator-display { display: block; min-height: 82px; padding: 24px 6px 10px; overflow: hidden; color: #203047; text-align: right; font-size: 42px; font-weight: 300; }
+.calculator-keys { display: grid; grid-template-columns: repeat(4,1fr); gap: 7px; }
+.calculator-keys button { min-height: 58px; color: #354860; background: #fff; border: 1px solid #e1e8f0; border-radius: 10px; cursor: pointer; }
+.calculator-keys button:active { background: #e4eef9; }
 .calculator-keys .equals-key { color: white; background: #347fc4; }
 .calculator-keys .zero-key { grid-column: span 2; }
-.settings-content { max-width: 650px; margin: 0 auto; padding: 35px 30px; }
-.settings-heading { display: flex; align-items: center; gap: 16px; padding-bottom: 22px; }
-.settings-heading p { margin: 4px 0 0; color: #718198; font-size: 11px; }
-.settings-big-icon { width: 46px; height: 46px; display: grid; place-items: center; color: #347bc2; background: #e8f2fd; border-radius: 12px; font-size: 25px; }
-.setting-row { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 17px 0; border-top: 1px solid #e4ebf3; }
+.settings-content { max-width: 700px; margin: 0 auto; padding: 38px 32px; color: var(--ink); }
+.settings-heading { display: flex; align-items: center; gap: 18px; padding-bottom: 24px; }
+.settings-heading p { margin: 4px 0 0; color: #718198; font-size: 12px; }
+.settings-big-icon { width: 52px; height: 52px; display: grid; place-items: center; color: #347bc2; background: #e8f2fd; border-radius: 14px; font-size: 28px; }
+.setting-row { display: flex; align-items: center; justify-content: space-between; gap: 18px; min-height: 76px; border-top: 1px solid #e4ebf3; }
 .setting-row strong, .setting-row small { display: block; }
-.setting-row strong { color: #35475e; font-size: 12px; }
-.setting-row small { margin-top: 3px; color: #75849a; font-size: 10px; }
-.toggle-button { padding: 8px 12px; color: #2464a2; background: #eaf3fd; border: 1px solid #d5e5f5; border-radius: 5px; cursor: pointer; font-size: 10px; white-space: nowrap; }
-.toggle-button:hover { background: #dcecff; }
-.setting-status { color: #4a8d70; font-size: 10px; white-space: nowrap; }
-.games-heading { display: flex; align-items: end; justify-content: space-between; gap: 12px; padding: 23px 24px 14px; }
-.games-heading h2 { font-size: 20px; }
-.all-games-shortcut { min-height: 55px; display: flex; align-items: center; gap: 11px; margin: 0 24px 9px; padding: 8px 12px; background: #fff; border: 1px solid #dfe8f2; border-radius: 6px; }
-.all-games-shortcut:hover { background: #f2f8fe; border-color: #b7d3ef; }
-.all-games-icon { width: 32px; height: 32px; display: grid; place-items: center; color: #7657b9; background: #f0eaff; border-radius: 8px; }
+.setting-row strong { color: #35475e; font-size: 14px; }
+.setting-row small { margin-top: 4px; color: #75849a; font-size: 12px; }
+.toggle-button { min-height: 44px; padding: 8px 14px; color: #2464a2; background: #eaf3fd; border: 1px solid #d5e5f5; border-radius: 10px; cursor: pointer; font-size: 12px; }
+.setting-status { color: #4a8d70; font-size: 12px; }
+.games-heading { display: flex; align-items: end; justify-content: space-between; gap: 12px; padding: 24px 28px 16px; }
+.games-heading h2 { font-size: 24px; }
+.all-games-shortcut { min-height: 68px; display: flex; align-items: center; gap: 12px; margin: 0 28px 10px; padding: 10px 14px; background: #fff; border: 1px solid #dfe8f2; border-radius: 10px; }
+.all-games-icon { width: 40px; height: 40px; display: grid; place-items: center; color: #7657b9; background: #f0eaff; border-radius: 10px; }
 .all-games-shortcut > span:nth-child(2) { flex: 1; display: flex; flex-direction: column; }
-.all-games-shortcut strong { color: #30435b; font-size: 11px; }
-.all-games-shortcut small { color: #78889d; font-size: 9px; }
-.game-filters { display: flex; gap: 4px; }
-.game-filters button { padding: 6px 9px; color: #63748a; background: transparent; border: 1px solid transparent; border-radius: 5px; cursor: pointer; font-size: 10px; }
+.all-games-shortcut strong { color: #30435b; font-size: 13px; }
+.all-games-shortcut small { color: #78889d; font-size: 11px; }
+.game-filters { display: flex; gap: 5px; }
+.game-filters button { min-height: 44px; padding: 8px 12px; color: #63748a; background: transparent; border: 1px solid transparent; border-radius: 9px; cursor: pointer; font-size: 12px; }
 .game-filters button.selected, .game-filters button:hover { color: #2065a8; background: #eaf3fd; border-color: #d8e7f6; }
-.game-list { display: flex; flex-direction: column; gap: 6px; padding: 0 24px; }
-.game-row { min-height: 58px; display: flex; align-items: center; gap: 12px; padding: 8px 11px; background: #fff; border: 1px solid #e3eaf2; border-radius: 6px; }
-.game-row-icon { width: 34px; height: 34px; display: grid; place-items: center; flex: 0 0 34px; color: #7258b7; background: #f0eaff; border-radius: 8px; font-size: 17px; }
+.game-list { display: flex; flex-direction: column; gap: 7px; padding: 0 28px; }
+.game-row { min-height: 70px; display: flex; align-items: center; gap: 12px; padding: 10px 12px; background: #fff; border: 1px solid #e3eaf2; border-radius: 10px; }
+.game-row-icon { width: 42px; height: 42px; display: grid; place-items: center; flex: 0 0 42px; color: #7258b7; background: #f0eaff; border-radius: 10px; font-size: 20px; }
 .game-row-copy { flex: 1; min-width: 0; display: flex; flex-direction: column; }
-.game-row-copy strong { color: #30435b; font-size: 11px; }
-.game-row-copy small { overflow: hidden; color: #78889d; font-size: 9px; text-overflow: ellipsis; white-space: nowrap; }
-.game-category { color: #74849a; font-size: 9px; }
-.guide-wrap { max-width: 650px; margin: 0 auto; padding: 24px; }
-.guide-wrap .app-hero { padding: 20px; }
-.guide-wrap .app-hero h2 { font-size: 20px; }
-.guide-chat { min-height: 150px; max-height: 250px; display: flex; flex-direction: column; gap: 9px; overflow: auto; margin: 14px 0; padding: 14px; background: #fff; border: 1px solid #e3ebf3; border-radius: 7px; }
-.guide-message { align-self: flex-start; max-width: 85%; padding: 9px 11px; color: #44566d; background: #eef4fa; border-radius: 4px 9px 9px; font-size: 11px; }
-.user-guide-message { align-self: flex-end; color: #245c92; background: #e2effd; border-radius: 9px 4px 9px 9px; }
-.guide-form { display: flex; gap: 7px; }
-.guide-form input { flex: 1; min-width: 0; padding: 10px 11px; color: #30435b; background: white; border: 1px solid #dce5ef; border-radius: 5px; outline: none; font-size: 11px; }
-.guide-form input:focus { border-color: #77a9d8; box-shadow: 0 0 0 2px rgba(57,128,194,.13); }
-.guide-form button { padding: 0 15px; color: white; background: #347fc4; border: 0; border-radius: 5px; cursor: pointer; font-size: 11px; }
+.game-row-copy strong { color: #30435b; font-size: 13px; }
+.game-row-copy small { overflow: hidden; color: #78889d; font-size: 11px; text-overflow: ellipsis; white-space: nowrap; }
+.game-category { color: #74849a; font-size: 11px; }
+.guide-wrap { max-width: 700px; margin: 0 auto; padding: 26px; color: var(--ink); }
+.guide-wrap .app-hero h2 { font-size: 24px; }
+.guide-chat { min-height: 180px; max-height: 260px; display: flex; flex-direction: column; gap: 10px; overflow: auto; margin: 16px 0; padding: 16px; background: #fff; border: 1px solid #e3ebf3; border-radius: 12px; }
+.guide-message { align-self: flex-start; max-width: 85%; padding: 11px 13px; color: #44566d; background: #eef4fa; border-radius: 5px 12px 12px; font-size: 13px; }
+.user-guide-message { align-self: flex-end; color: #245c92; background: #e2effd; border-radius: 12px 5px 12px 12px; }
+.guide-form { display: flex; gap: 8px; }
+.guide-form input { flex: 1; min-width: 0; min-height: 48px; padding: 10px 13px; color: #30435b; background: white; border: 1px solid #dce5ef; border-radius: 10px; outline: none; font-size: 13px; }
+.guide-form button { min-width: 74px; color: white; background: #347fc4; border: 0; border-radius: 10px; cursor: pointer; font-size: 13px; }
 
 .start-menu {
   position: fixed;
-  z-index: 10;
-  bottom: 62px;
+  z-index: 12;
+  bottom: 112px;
   left: 50%;
-  width: min(590px, calc(100vw - 28px));
-  max-height: min(620px, calc(100vh - 80px));
+  width: min(620px, calc(100vw - 36px));
+  max-height: min(620px, calc(100dvh - 150px));
   overflow: hidden;
-  padding: 22px 24px 0;
+  padding: 24px 24px 0;
   color: #2b3d54;
-  background: rgba(248,251,255,.95);
+  background: rgba(248,251,255,.96);
   border: 1px solid rgba(255,255,255,.94);
-  border-radius: 10px;
-  box-shadow: 0 18px 60px rgba(14,39,69,.38);
-  backdrop-filter: blur(26px);
+  border-radius: 24px;
+  box-shadow: 0 22px 70px rgba(14,39,69,.38);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
   transform: translateX(-50%);
 }
-.start-header { display: flex; flex-direction: column; margin-bottom: 15px; }
-.start-header strong { font-size: 18px; font-weight: 600; }
-.start-header span { color: #7b8a9e; font-size: 10px; }
-.start-search { width: 100%; height: 35px; margin-bottom: 16px; padding: 0 12px; color: #344860; background: rgba(255,255,255,.88); border: 1px solid #dce6f0; border-radius: 5px; outline: none; font-size: 11px; }
-.start-search:focus { border-color: #83b1dc; }
-.start-section-title { margin-bottom: 10px; color: #52657d; font-size: 10px; font-weight: 600; }
-.start-app-grid { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: 5px; max-height: 350px; overflow: auto; }
-.start-app { min-width: 0; min-height: 75px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 7px 3px; color: #42546b; background: transparent; border: 1px solid transparent; border-radius: 6px; cursor: pointer; font-size: 9px; }
+.start-header { display: flex; flex-direction: column; margin-bottom: 16px; }
+.start-header strong { font-size: 22px; }
+.start-header span { color: #7b8a9e; font-size: 12px; }
+.start-search { width: 100%; height: 48px; margin-bottom: 18px; padding: 0 14px; color: #344860; background: rgba(255,255,255,.88); border: 1px solid #dce6f0; border-radius: 12px; outline: none; font-size: 14px; }
+.start-section-title { margin-bottom: 10px; color: #52657d; font-size: 12px; font-weight: 600; }
+.start-app-grid { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: 8px; max-height: 350px; overflow: auto; }
+.start-app { min-width: 0; min-height: 92px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 8px 4px; color: #42546b; background: transparent; border: 1px solid transparent; border-radius: 12px; cursor: pointer; font-size: 11px; }
 .start-app:hover { background: #eaf3fc; border-color: #deebf8; }
-.start-app .app-icon { width: 31px; height: 31px; flex-basis: 31px; border-radius: 8px; font-size: 17px; }
-.start-footer { height: 48px; display: flex; align-items: center; justify-content: space-between; margin: 12px -24px 0; padding: 0 20px; background: rgba(233,240,248,.8); color: #53657c; font-size: 10px; }
-.profile-dot { width: 25px; height: 25px; display: grid; place-items: center; color: #fff; background: #6789ae; border-radius: 50%; font-size: 10px; }
+.start-app .app-icon { width: 44px; height: 44px; flex-basis: 44px; border-radius: 11px; font-size: 22px; }
+.start-footer { height: 54px; display: flex; align-items: center; justify-content: space-between; margin: 14px -24px 0; padding: 0 22px; background: rgba(233,240,248,.8); color: #53657c; font-size: 12px; }
+.profile-dot { width: 32px; height: 32px; display: grid; place-items: center; color: #fff; background: #6789ae; border-radius: 50%; font-size: 12px; }
 
-.taskbar { position: fixed; z-index: 12; right: 0; bottom: 0; left: 0; height: 52px; display: flex; align-items: center; justify-content: center; background: rgba(245,249,255,.84); border-top: 1px solid rgba(255,255,255,.82); box-shadow: 0 -3px 16px rgba(22,52,84,.18); backdrop-filter: blur(22px); }
+.taskbar {
+  position: fixed;
+  z-index: 14;
+  right: 50%;
+  bottom: max(18px, env(safe-area-inset-bottom));
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(230, 239, 249, .48);
+  border: 1px solid rgba(255,255,255,.48);
+  border-radius: 22px;
+  box-shadow: 0 14px 38px rgba(20,44,74,.28), inset 0 1px rgba(255,255,255,.38);
+  backdrop-filter: blur(26px);
+  -webkit-backdrop-filter: blur(26px);
+  transform: translateX(50%);
+  padding: 7px 10px;
+}
 .taskbar-center { display: flex; align-items: center; gap: 5px; }
-.taskbar-button { position: relative; height: 40px; min-width: 38px; display: inline-flex; align-items: center; justify-content: center; gap: 7px; padding: 0 8px; background: transparent; border: 0; border-radius: 5px; cursor: pointer; }
-.start-button { min-width: 66px; gap: 6px; }
-.start-button-label { color: #465a72; font-size: 10px; font-weight: 600; }
-.taskbar-button:hover, .taskbar-button[aria-expanded="true"] { background: rgba(79,142,201,.13); }
-.taskbar-button .app-icon { width: 27px; height: 27px; flex-basis: 27px; border-radius: 7px; font-size: 15px; }
-.pane-mark { width: 19px; height: 19px; display: grid; grid-template-columns: repeat(2,1fr); gap: 2px; transform: skewY(-6deg); }
-.pane-mark i { background: #2781d2; }
-.taskbar-search { width: 190px; height: 34px; display: flex; align-items: center; gap: 7px; padding: 0 10px; color: #60738b; background: rgba(255,255,255,.84); border: 1px solid #d9e3ee; border-radius: 17px; }
-.taskbar-search:focus-within { border-color: #93b7d9; box-shadow: 0 0 0 2px rgba(57,128,194,.1); }
-.taskbar-search > span { font-size: 18px; }
-.taskbar-search input { width: 100%; min-width: 0; color: #41556d; background: transparent; border: 0; outline: 0; font-size: 10px; }
+.taskbar-button { position: relative; height: 58px; min-width: 58px; display: inline-flex; align-items: center; justify-content: center; gap: 7px; padding: 0 8px; background: transparent; border: 0; border-radius: 15px; cursor: pointer; }
+.start-button { min-width: 58px; }
+.start-button-label { display: none; }
+.taskbar-button:hover, .taskbar-button[aria-expanded="true"], .taskbar-button:active { background: rgba(255,255,255,.26); }
+.taskbar-button .app-icon { width: 46px; height: 46px; flex-basis: 46px; border-radius: 12px; font-size: 23px; }
+.pane-mark { width: 28px; height: 28px; display: grid; grid-template-columns: repeat(2,1fr); gap: 3px; transform: rotate(-4deg); }
+.pane-mark i { border-radius: 3px; background: #fff; box-shadow: 0 1px 5px rgba(34,74,118,.18); }
+.taskbar-search { width: 210px; height: 44px; display: flex; align-items: center; gap: 8px; padding: 0 12px; color: #60738b; background: rgba(255,255,255,.72); border: 1px solid rgba(255,255,255,.74); border-radius: 22px; }
+.taskbar-search input { width: 100%; min-width: 0; color: #41556d; background: transparent; border: 0; outline: 0; font-size: 13px; }
 .taskbar-search input::placeholder { color: #8594a7; }
-.active-app:after { content: ""; position: absolute; bottom: 1px; left: 30%; right: 30%; height: 2px; background: #347fc4; border-radius: 2px; }
-.taskbar-app-icon { color: #3d82c4; font-size: 15px; }
-.system-tray { position: absolute; right: 18px; top: 0; height: 100%; display: flex; align-items: center; gap: 9px; color: #465a72; }
-.tray-symbol { font-size: 13px; }
-.system-tray > div { display: flex; flex-direction: column; align-items: flex-end; font-size: 9px; line-height: 1.25; }
+.active-app { min-width: 58px; }
+.active-app:after { content: ""; position: absolute; bottom: 1px; left: 38%; right: 38%; height: 3px; background: #fff; border-radius: 3px; box-shadow: 0 1px 4px rgba(42,72,105,.35); }
+.taskbar-app-icon { color: #3d82c4; font-size: 20px; }
+.system-tray { display: none; }
 
-@media (max-width: 700px) {
-  .desktop { padding: 17px 12px; }
-  .desktop-widgets { top: 17px; right: 16px; gap: 12px; }
+@media (min-width: 1024px) {
+  .desktop-icons { grid-template-columns: repeat(6, 112px); grid-auto-rows: 112px; top: 132px; left: 48px; gap: 18px 12px; }
+  .desktop-shortcut { width: 112px; }
+  .app-window { right: 9vw; left: 9vw; bottom: 112px; }
+}
+@media (max-width: 820px) {
+  .desktop-widgets { top: 42px; right: 18px; }
   .welcome-widget { display: none; }
-  .start-button { min-width: 38px; }
-  .start-button-label { display: none; }
-  .desktop-icons { grid-template-rows: repeat(5, 82px); grid-auto-columns: 76px; }
-  .desktop-shortcut { width: 70px; min-height: 75px; font-size: 10px; }
-  .app-window { width: calc(100vw - 22px); height: calc(100vh - 78px); min-height: 300px; }
-  .app-window.is-maximized { top: 4px; left: 4px; width: calc(100vw - 8px); height: calc(100vh - 60px); }
-  .window-controls button { width: 38px; }
-  .explorer-layout { grid-template-columns: 125px 1fr; }
-  .explorer-sidebar { padding: 14px 7px; font-size: 9px; }
+  .desktop-icons { top: 82px; left: 20px; grid-template-columns: repeat(4, 100px); grid-auto-rows: 104px; }
+  .desktop-shortcut { width: 100px; }
+  .app-window { top: 32px; right: 10px; bottom: 98px; left: 10px; border-radius: 18px; }
+  .taskbar { height: 66px; bottom: max(12px, env(safe-area-inset-bottom)); border-radius: 20px; }
+  .taskbar-button { height: 52px; min-width: 52px; }
+  .taskbar-button .app-icon { width: 42px; height: 42px; flex-basis: 42px; }
+  .taskbar-search { width: 170px; }
+}
+@media (max-width: 600px) {
+  .ipad-status-bar { right: 12px; left: 12px; }
+  .desktop-widgets { top: 38px; right: 12px; }
+  .clock-widget { min-width: 118px; }
+  .desktop-icons { top: 82px; left: 8px; grid-template-columns: repeat(3, 92px); grid-auto-rows: 98px; gap: 8px 4px; }
+  .desktop-shortcut { width: 92px; min-height: 98px; font-size: 11px; }
+  .app-icon { width: 54px; height: 54px; flex-basis: 54px; border-radius: 14px; }
+  .app-window { top: 24px; right: 6px; bottom: 88px; left: 6px; border-radius: 16px; }
+  .window-titlebar { height: 50px; flex-basis: 50px; padding-left: 12px; }
+  .window-controls button { width: 40px; height: 40px; }
+  .window-controls button:nth-child(2), .window-controls button:nth-child(3) { display: none; }
+  .explorer-layout { grid-template-columns: 112px 1fr; }
+  .explorer-sidebar { padding: 14px 6px; font-size: 11px; }
   .explorer-content { padding: 16px 12px; }
-  .folder-card { width: min(130px,100%); }
-  .app-page { padding: 17px 14px 22px; }
-  .games-heading { align-items: flex-start; flex-direction: column; padding: 17px 14px 10px; }
+  .folder-card { width: min(150px,100%); }
+  .app-page { padding: 16px 14px 22px; }
+  .app-hero { padding: 20px; }
+  .app-hero h2 { font-size: 22px; }
+  .games-heading { align-items: flex-start; flex-direction: column; padding: 16px 14px 10px; }
   .game-list { padding: 0 14px; }
   .all-games-shortcut { margin-right: 14px; margin-left: 14px; }
   .game-category { display: none; }
   .site-grid { grid-template-columns: 1fr; }
-  .site-grid > a { min-height: 65px; }
-  .system-tray { right: 9px; gap: 5px; }
-  .taskbar-center { gap: 1px; }
-  .taskbar-search { width: min(130px, 30vw); }
-  .taskbar a.pinned-button { display: none; }
+  .site-grid > a { min-height: 72px; }
+  .settings-content { padding: 24px 18px; }
+  .start-menu { bottom: 96px; width: calc(100vw - 16px); max-height: calc(100dvh - 112px); padding: 18px 16px 0; border-radius: 18px; }
+  .start-app-grid { grid-template-columns: repeat(4,minmax(0,1fr)); max-height: 52vh; }
+  .start-footer { margin-right: -16px; margin-left: -16px; }
+  .taskbar { height: 60px; bottom: max(8px, env(safe-area-inset-bottom)); }
+  .taskbar-center { gap: 2px; }
+  .taskbar-button { height: 48px; min-width: 48px; padding: 0 5px; }
+  .taskbar-button .app-icon { width: 38px; height: 38px; flex-basis: 38px; }
+  .taskbar-search { width: 140px; height: 40px; }
+  .taskbar a.pinned-button, .pinned-button:nth-of-type(4) { display: none; }
   #taskbar-app-title { display: none; }
 }
-@media (max-width: 430px) {
-  .start-menu { bottom: 57px; width: 100%; max-height: calc(100vh - 65px); padding: 16px 15px 0; border-radius: 10px 10px 0 0; }
-  .start-app-grid { grid-template-columns: repeat(4,minmax(0,1fr)); max-height: 52vh; }
-  .start-footer { margin-right: -15px; margin-left: -15px; }
-  .taskbar { height: 48px; }
-  .taskbar-search { width: 125px; }
-  .taskbar-center { gap: 0; }
-  .taskbar-button { min-width: 32px; padding: 0 5px; }
-  .pinned-button:nth-of-type(4) { display: none; }
-  .system-tray { right: 5px; }
-  .tray-symbol:first-child { display: none; }
-  .system-tray > div { font-size: 8px; }
+@media (orientation: landscape) and (max-height: 500px) {
+  .desktop-widgets { top: 38px; }
+  .desktop-icons { top: 76px; grid-template-columns: repeat(6, 92px); grid-auto-rows: 96px; }
+  .desktop-shortcut { width: 92px; min-height: 96px; }
+  .app-window { top: 28px; bottom: 82px; }
+  .taskbar { height: 58px; bottom: 8px; }
+  .taskbar-button { height: 46px; min-width: 46px; }
+  .taskbar-button .app-icon { width: 38px; height: 38px; flex-basis: 38px; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition-duration: .01ms !important; scroll-behavior: auto !important; }

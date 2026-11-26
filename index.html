@@ -2,20 +2,26 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#0c0d12">
-    <meta name="description" content="Nino-OS-Playfield is an original Windows-inspired desktop launcher with browser games. Open the public Playfield app or find its GitHub source. Not affiliated with Nino OS.">
+    <meta name="description" content="Nino OS iPad is an original iPad-first operating-system-style playfield with browser games and built-in utilities.">
     <link rel="canonical" href="https://carloslara12302014-cell.github.io/nino-os-playfield/">
-    <meta property="og:title" content="Nino-OS-Playfield | Playfield Desktop">
-    <meta property="og:description" content="An original desktop-style launcher with browser games. Explore the nino-os-playfield project on GitHub; not affiliated with Nino OS.">
+    <meta property="og:title" content="Nino OS iPad">
+    <meta property="og:description" content="An original iPad-first launcher with browser games and built-in utilities.">
     <meta property="og:url" content="https://carloslara12302014-cell.github.io/nino-os-playfield/">
     <meta property="og:type" content="website">
-    <title>Nino-OS-Playfield | Playfield Desktop</title>
-    <link rel="stylesheet" href="desktop.css?v=7">
-    <script src="app.js?v=8" defer></script>
+    <title>Nino OS iPad</title>
+    <link rel="stylesheet" href="desktop.css?v=9">
+    <script src="app.js?v=9" defer></script>
   </head>
   <body>
     <main class="desktop" id="desktop">
+      <header class="ipad-status-bar" aria-label="iPad status">
+        <strong class="ipad-status-time" id="ipad-time">9:41</strong>
+        <span class="status-icons" aria-hidden="true"><i>●●</i><i>⌁</i><i>▰</i></span>
+      </header>
       <header class="desktop-widgets">
         <div class="welcome-widget">
           <span class="widget-spark" aria-hidden="true">✦</span>
@@ -44,7 +50,7 @@
 
       <section class="app-window" id="app-window" aria-labelledby="window-title" hidden>
         <header class="window-titlebar">
-          <div class="window-app"><span class="window-app-icon" id="window-app-icon">✳</span><span id="window-title">Playfield</span></div>
+          <div class="window-app"><span class="window-app-icon" id="window-app-icon">✳</span><span id="window-title">Nino OS iPad</span></div>
           <div class="window-controls" aria-label="Window controls">
             <button type="button" id="back-to-desktop" aria-label="Back to desktop" title="Back to desktop">←</button>
             <button type="button" id="minimize-window" aria-label="Minimize">−</button>
@@ -61,11 +67,11 @@
         <input id="start-search" class="start-search" type="search" placeholder="Search apps">
         <div class="start-section-title">Pinned</div>
         <div class="start-app-grid" id="start-app-grid"></div>
-        <div class="start-footer"><span>Playfield desktop</span><span class="profile-dot">P</span></div>
+        <div class="start-footer"><span>Nino OS iPad</span><span class="profile-dot">N</span></div>
       </section>
     </main>
 
-    <nav class="taskbar" aria-label="Desktop taskbar">
+    <nav class="taskbar" aria-label="iPad dock">
       <div class="taskbar-center">
         <button type="button" class="taskbar-button start-button" id="start-button" aria-label="Open Apps menu" title="Open apps" aria-expanded="false">
           <span class="pane-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>

@@ -1,8 +1,8 @@
-# Nino OS Playfield (Playfield Desktop)
+# Nino OS iPad
 
 [**Open the app**](https://carloslara12302014-cell.github.io/nino-os-playfield/)
 
-Playfield Desktop is an original desktop-style app launcher with a Windows 11-inspired layout. The project is named `nino-os-playfield` on GitHub so it is easy to find when searching for “nino-os github.” It includes a few familiar desktop utilities, browser-game links, a Tubi shortcut, Opera GX, Google Search, and a local play-guide demo. It is not Windows, the Nino OS project, or affiliated with Microsoft or Nino OS. Its default dark abstract wallpaper is drawn with CSS; Settings can switch to a blue theme.
+Nino OS iPad is an original, static iPad-first launcher inspired by familiar operating-system layouts. It keeps the existing app catalog and visual language while presenting it through a touch-friendly home screen, large app targets, a dock, and floating app views. It is not a native iPadOS app and is not affiliated with Apple or Nino OS.
 
 ## Run it
 

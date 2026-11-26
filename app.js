@@ -59,10 +59,10 @@ const templates = {
       <button class="zero-key" data-calc="digit" data-value="0">0</button><button data-calc="decimal">.</button>
     </div></div>`,
   settings: `<div class="app-toolbar"><strong>Settings</strong><span class="app-muted">Make this desktop yours</span></div><div class="settings-content">
-    <div class="settings-heading"><span class="settings-big-icon">⚙</span><div><h2>Personalization</h2><p>Choose the feel of your Playfield desktop.</p></div></div>
+    <div class="settings-heading"><span class="settings-big-icon">⚙</span><div><h2>Personalization</h2><p>Choose the feel of your Nino OS iPad.</p></div></div>
     <div class="setting-row"><div><strong>Desktop wallpaper</strong><small>Switch between the dark and blue color themes.</small></div><button class="toggle-button" id="wallpaper-toggle" type="button" aria-pressed="false">Use blue wallpaper</button></div>
     <div class="setting-row"><div><strong>Privacy</strong><small>Apps here are demos and external links; this page stores no personal data.</small></div><span class="setting-status">On this device</span></div>
-    <p class="privacy-note">Playfield is an original desktop-style demo, not Windows and not affiliated with Microsoft.</p>
+    <p class="privacy-note">Nino OS iPad is an original browser demo and is not affiliated with Apple or Microsoft.</p>
   </div>`,
   games: `<div class="app-toolbar"><strong>Games</strong><span class="app-muted">Your little game library</span></div>
     <div class="games-heading"><div><span class="mini-label">BROWSER ARCADE</span><h2>Pick your next game</h2></div>
@@ -230,8 +230,13 @@ function setupGameFilters() {
 
 function setupSettings() {
   const button = document.querySelector("#wallpaper-toggle");
+  const savedBlue = localStorage.getItem("playfield-wallpaper") === "blue";
+  desktop.classList.toggle("blue-wallpaper", savedBlue);
+  button.setAttribute("aria-pressed", String(savedBlue));
+  button.textContent = savedBlue ? "Use dark wallpaper" : "Use blue wallpaper";
   button.addEventListener("click", () => {
     const blue = desktop.classList.toggle("blue-wallpaper");
+    localStorage.setItem("playfield-wallpaper", blue ? "blue" : "dark");
     button.setAttribute("aria-pressed", String(blue));
     button.textContent = blue ? "Use dark wallpaper" : "Use blue wallpaper";
   });
@@ -308,13 +313,18 @@ function setupGuide() {
 
 function updateClock() {
   const now = new Date();
-  document.querySelector("#desktop-time").textContent = new Intl.DateTimeFormat(undefined, { hour: "numeric", minute: "2-digit" }).format(now);
+  const time = new Intl.DateTimeFormat(undefined, { hour: "numeric", minute: "2-digit" }).format(now);
+  document.querySelector("#ipad-time").textContent = time;
+  document.querySelector("#desktop-time").textContent = time;
   document.querySelector("#tray-time").textContent = new Intl.DateTimeFormat(undefined, { hour: "numeric", minute: "2-digit" }).format(now);
   const date = new Intl.DateTimeFormat(undefined, { month: "numeric", day: "numeric", year: "numeric" }).format(now);
   document.querySelector("#desktop-date").textContent = date;
   document.querySelector("#tray-date").textContent = date;
 }
 
+if (localStorage.getItem("playfield-wallpaper") === "blue") {
+  desktop.classList.add("blue-wallpaper");
+}
 buildStartMenu();
 updateClock();
 window.setInterval(updateClock, 30_000);
