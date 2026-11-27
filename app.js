@@ -27,6 +27,7 @@ const appCatalog = [
   { id: "games", name: "Games", glyph: "✦", icon: "icon-games", keywords: "arcade play puzzle action" },
   { id: "tubi", name: "Tubi", glyph: "▶", icon: "icon-tubi", keywords: "movies films streaming tv shows google play" },
   { id: "guide", name: "AI Assistant", glyph: "✳", icon: "icon-guide", keywords: "vision camera photo image paste chat" },
+  { id: "xbox", name: "Xbox Cloud Gaming", glyph: "X", icon: "icon-xbox", url: "https://play.xbox.com/?xr=shellnav", keywords: "xbox cloud gaming games" },
   { id: "cine", name: "Cine-OS", glyph: "C", icon: "icon-cine", url: "https://cineosweb.github.io/", keywords: "cinema movies video streaming" },
   { id: "opera", name: "Opera GX", glyph: "O", icon: "icon-opera", url: "https://www.opera.com/gx", keywords: "browser web gaming" },
   { id: "google", name: "Google Search", glyph: "G", icon: "icon-google", url: "https://www.google.com/", keywords: "search web internet" },
@@ -250,7 +251,7 @@ function setupSettings() {
     windowsButton.textContent = wallpaper === "windows" ? "Windows wallpaper selected" : "Use Windows wallpaper";
   }
   const savedWallpaper = localStorage.getItem("playfield-wallpaper");
-  applyWallpaper(savedWallpaper === "blue" || savedWallpaper === "windows" ? savedWallpaper : "dark");
+  applyWallpaper(savedWallpaper === "blue" ? "blue" : "windows");
   button.addEventListener("click", () => {
     applyWallpaper(button.getAttribute("aria-pressed") === "true" ? "dark" : "blue");
   });
@@ -517,9 +518,7 @@ function updateClock() {
 }
 
 const savedWallpaper = localStorage.getItem("playfield-wallpaper");
-if (savedWallpaper === "blue" || savedWallpaper === "windows") {
-  desktop.classList.add(savedWallpaper === "blue" ? "blue-wallpaper" : "windows-wallpaper");
-}
+desktop.classList.add(savedWallpaper === "blue" ? "blue-wallpaper" : "windows-wallpaper");
 buildStartMenu();
 updateClock();
 window.setInterval(updateClock, 30_000);
