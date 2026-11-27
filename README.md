@@ -1,6 +1,6 @@
 # Nino OS iPad
 
-[**Open the app**](https://carloslara12302014-cell.github.io/nino-os-playfield/)
+[**Open the app**](https://carloslara12302014-cell.github.io/nino-os67/)
 
 Nino OS iPad is an original, static iPad-first launcher inspired by familiar operating-system layouts. It keeps the existing app catalog and visual language while presenting it through a touch-friendly home screen, large app targets, a dock, and floating app views. It is not a native iPadOS app and is not affiliated with Apple or Nino OS.
 
