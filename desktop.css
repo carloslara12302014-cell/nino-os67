@@ -55,6 +55,10 @@ a { color: inherit; text-decoration: none; }
     radial-gradient(circle at 68% 15%, rgba(192, 232, 255, .85), transparent 28%),
     linear-gradient(145deg, #70b4ef 0%, #3d87cf 48%, #254d85 100%);
 }
+.desktop.windows-wallpaper {
+  background: url("https://wallpapers.com/images/hd/black-windows-1920-x-1080-background-sa5gqrlxslxalb45.jpg") center / cover no-repeat;
+}
+.desktop.windows-wallpaper:before, .desktop.windows-wallpaper:after { display: none; }
 
 .ipad-status-bar {
   position: absolute;
@@ -228,6 +232,7 @@ a { color: inherit; text-decoration: none; }
 .settings-heading p { margin: 4px 0 0; color: #718198; font-size: 12px; }
 .settings-big-icon { width: 52px; height: 52px; display: grid; place-items: center; color: #347bc2; background: #e8f2fd; border-radius: 14px; font-size: 28px; }
 .setting-row { display: flex; align-items: center; justify-content: space-between; gap: 18px; min-height: 76px; border-top: 1px solid #e4ebf3; }
+.setting-actions { display: flex; flex-wrap: wrap; gap: 8px; }
 .setting-row strong, .setting-row small { display: block; }
 .setting-row strong { color: #35475e; font-size: 14px; }
 .setting-row small { margin-top: 4px; color: #75849a; font-size: 12px; }

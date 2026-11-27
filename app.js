@@ -62,7 +62,7 @@ const templates = {
     </div></div>`,
   settings: `<div class="app-toolbar"><strong>Settings</strong><span class="app-muted">Make this desktop yours</span></div><div class="settings-content">
     <div class="settings-heading"><span class="settings-big-icon">⚙</span><div><h2>Personalization</h2><p>Choose the feel of your Nino OS iPad.</p></div></div>
-    <div class="setting-row"><div><strong>Desktop wallpaper</strong><small>Switch between the dark and blue color themes.</small></div><button class="toggle-button" id="wallpaper-toggle" type="button" aria-pressed="false">Use blue wallpaper</button></div>
+    <div class="setting-row"><div><strong>Desktop wallpaper</strong><small>Choose the original theme, blue theme, or Windows wallpaper.</small></div><div class="setting-actions"><button class="toggle-button" id="wallpaper-toggle" type="button" aria-pressed="false">Use blue wallpaper</button><button class="toggle-button" id="windows-wallpaper-toggle" type="button" aria-pressed="false">Use Windows wallpaper</button></div></div>
     <div class="setting-row"><div><strong>Privacy</strong><small>Apps here are demos and external links; this page stores no personal data.</small></div><span class="setting-status">On this device</span></div>
     <p class="privacy-note">Nino OS iPad is an original browser demo and is not affiliated with Apple or Microsoft.</p>
   </div>`,
@@ -239,15 +239,23 @@ function setupGameFilters() {
 
 function setupSettings() {
   const button = document.querySelector("#wallpaper-toggle");
-  const savedBlue = localStorage.getItem("playfield-wallpaper") === "blue";
-  desktop.classList.toggle("blue-wallpaper", savedBlue);
-  button.setAttribute("aria-pressed", String(savedBlue));
-  button.textContent = savedBlue ? "Use dark wallpaper" : "Use blue wallpaper";
+  const windowsButton = document.querySelector("#windows-wallpaper-toggle");
+  function applyWallpaper(wallpaper) {
+    desktop.classList.toggle("blue-wallpaper", wallpaper === "blue");
+    desktop.classList.toggle("windows-wallpaper", wallpaper === "windows");
+    localStorage.setItem("playfield-wallpaper", wallpaper);
+    button.setAttribute("aria-pressed", String(wallpaper === "blue"));
+    button.textContent = wallpaper === "blue" ? "Use dark wallpaper" : "Use blue wallpaper";
+    windowsButton.setAttribute("aria-pressed", String(wallpaper === "windows"));
+    windowsButton.textContent = wallpaper === "windows" ? "Windows wallpaper selected" : "Use Windows wallpaper";
+  }
+  const savedWallpaper = localStorage.getItem("playfield-wallpaper");
+  applyWallpaper(savedWallpaper === "blue" || savedWallpaper === "windows" ? savedWallpaper : "dark");
   button.addEventListener("click", () => {
-    const blue = desktop.classList.toggle("blue-wallpaper");
-    localStorage.setItem("playfield-wallpaper", blue ? "blue" : "dark");
-    button.setAttribute("aria-pressed", String(blue));
-    button.textContent = blue ? "Use dark wallpaper" : "Use blue wallpaper";
+    applyWallpaper(button.getAttribute("aria-pressed") === "true" ? "dark" : "blue");
+  });
+  windowsButton.addEventListener("click", () => {
+    applyWallpaper(windowsButton.getAttribute("aria-pressed") === "true" ? "dark" : "windows");
   });
 }
 
@@ -508,8 +516,9 @@ function updateClock() {
   document.querySelector("#tray-date").textContent = date;
 }
 
-if (localStorage.getItem("playfield-wallpaper") === "blue") {
-  desktop.classList.add("blue-wallpaper");
+const savedWallpaper = localStorage.getItem("playfield-wallpaper");
+if (savedWallpaper === "blue" || savedWallpaper === "windows") {
+  desktop.classList.add(savedWallpaper === "blue" ? "blue-wallpaper" : "windows-wallpaper");
 }
 buildStartMenu();
 updateClock();
