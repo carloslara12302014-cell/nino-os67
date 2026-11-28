@@ -1,19 +1,16 @@
-# Nino OS iPad
+# Co-NINO
 
-[**Open the app**](https://carloslara12302014-cell.github.io/nino-os67/)
+Co-NINO is an original, static browser desktop: a welcoming home screen, a small launcher, and handy built-in apps. Use it as a little place to explore, write notes, do quick math, or open links to other sites.
 
-Nino OS iPad is an original, static iPad-first launcher inspired by familiar operating-system layouts. It keeps the existing app catalog and visual language while presenting it through a touch-friendly home screen, large app targets, a dock, and floating app views. It is not a native iPadOS app and is not affiliated with Apple or Nino OS.
+[**Open Co-NINO**](https://carloslara12302014-cell.github.io/nino-os67/)
 
 ## Run it
 
-Open `index.html` in a modern browser. No install, build step, account, or server is required.
+Open `index.html` in a modern browser on a phone, tablet, desktop, or TV. The layout adapts to small touch screens, tablet orientations, and large TV displays. TV remotes that send arrow and Enter keys can navigate the desktop and app launcher. No install, build step, account, or server is required.
 
 ## Notes
 
-- Browser shortcuts and games open third-party websites in a new tab. Their availability, content, and age ratings are controlled by those sites and the network you use.
-- The Tubi app offers the Google Play listing and Tubi's browser site in new tabs; app installation and content availability depend on your device and region.
-- The Games icon links to a PlayStation app icon from Wikimedia Commons. PlayStation is a Sony trademark; this project is not affiliated with Sony or PlayStation. The Play Guide icon is by Icons8, credited in the app.
-- The Store icon uses an App Store logo image from Logos World; Apple and the App Store logo are Apple trademarks, and this project is not affiliated with Apple.
-- Use games and websites only where permitted. This page does not bypass network or device restrictions.
-- File Explorer is a visual demo and does not access device files. Notepad text is not saved.
-- The Play Guide is a local demo, not a live AI; it does not send or store messages.
+- Web searches and links open their destination in a new tab. External sites control their own content, privacy practices, availability, and age ratings.
+- Notes and the selected desktop theme are saved in this browser's local storage. Notes are not uploaded to a service.
+- Files is a visual shortcut hub and does not access device files.
+- Co-NINO is an independent browser experience and is not affiliated with the services linked from its apps.

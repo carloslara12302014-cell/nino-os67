@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://carloslara12302014-cell.github.io/nino-os-playfield/sitemap.xml
+Sitemap: https://carloslara12302014-cell.github.io/nino-os67/sitemap.xml
