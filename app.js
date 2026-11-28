@@ -7,6 +7,7 @@ const appSearch = document.querySelector("#app-search");
 const appGrid = document.querySelector("#menu-app-grid");
 const shortcutGrid = document.querySelector("#desktop-icons");
 const quickSearchInput = document.querySelector("#quick-search-input");
+const profilePhotoPath = "assets/profile-portrait.jpg";
 let focusOrigin = null;
 
 const apps = [
@@ -15,6 +16,7 @@ const apps = [
   { id: "discover", name: "Discover", subtitle: "Good places to start", symbol: "✧", style: "discover", keywords: "explore internet links" },
   { id: "arcade", name: "Arcade", subtitle: "Take a little break", symbol: "✳", style: "arcade", keywords: "games play puzzle" },
   { id: "media", name: "Watch", subtitle: "Find something to watch", symbol: "▶", style: "media", keywords: "movies video streaming" },
+  { id: "photos", name: "Photos", subtitle: "Choose a profile picture", symbol: "▣", style: "photos", keywords: "images pictures gallery profile portrait avatar" },
   { id: "notes", name: "Notes", subtitle: "Keep a thought", symbol: "▤", style: "notes", keywords: "write text notebook" },
   { id: "calculator", name: "Calculator", subtitle: "Quick little sums", symbol: "＋", style: "calculator", keywords: "math numbers" },
   { id: "settings", name: "Settings", subtitle: "Make it yours", symbol: "⚙", style: "settings", keywords: "theme appearance color" }
@@ -74,6 +76,20 @@ const templates = {
     <div class="feature-banner media-banner"><span class="eyebrow">MAKE IT A MOVIE NIGHT</span><h2>Something good is on.</h2><p>Browse independent video platforms and find your next watch.</p><span class="feature-star" aria-hidden="true">▶</span></div>
     <h3 class="section-label">OPEN A VIDEO SERVICE</h3><div class="link-grid">${linkCards(externalLinks.watch)}</div>
     <p class="fine-print"><span class="info-dot">i</span> Streaming services have their own accounts, age ratings, and regional availability.</p>
+  </div>`,
+  photos: `<div class="app-page photos-page">
+    <div class="page-intro"><span class="eyebrow">YOUR PHOTOS</span><h2>Choose a profile photo.</h2><p>Start with this sample portrait and make this desktop feel like yours.</p></div>
+    <section class="photo-profile-card" aria-label="Sample profile photo">
+      <img class="photo-profile-image" src="${profilePhotoPath}" alt="Sample portrait of a man wearing glasses" width="640" height="640">
+      <div class="photo-profile-copy">
+        <span class="eyebrow">PROFILE PICTURE</span>
+        <h3>A friendly face</h3>
+        <p>This sample photo is saved as your profile picture only on this device.</p>
+        <button class="photo-action" id="set-profile-photo" type="button" aria-pressed="false">Use as profile photo</button>
+        <p class="photo-status" id="photo-status" aria-live="polite"></p>
+        <a class="photo-credit" href="https://www.pexels.com/photo/man-wearing-black-crew-neck-shirt-220453/" target="_blank" rel="noopener noreferrer">Sample portrait from Pexels <span aria-hidden="true">↗</span></a>
+      </div>
+    </section>
   </div>`,
   notes: `<div class="notes-page"><div class="notes-toolbar"><span class="notes-indicator"><i></i> SAVED ON THIS DEVICE</span><span id="notes-status" aria-live="polite"></span></div><label class="sr-only" for="notes-area">Your notes</label><textarea id="notes-area" placeholder="A thought, a list, a tiny plan...&#10;&#10;This space is yours."></textarea></div>`,
   calculator: `<div class="calculator-page"><div class="calculator-top"><span class="eyebrow">QUICK MATH</span><h2>Calculator</h2></div><output class="calculator-display" id="calculator-display" aria-live="polite">0</output><div class="calculator-keys" id="calculator-keys">
@@ -142,6 +158,7 @@ function openApp(appId) {
   if (appId === "calculator") setupCalculator();
   if (appId === "settings") setupSettings();
   if (appId === "browser") setupBrowser();
+  if (appId === "photos") setupPhotos();
   document.querySelector("#close-window").focus();
 }
 
@@ -294,6 +311,40 @@ function setupSettings() {
   });
 }
 
+function updateProfileAvatar() {
+  const avatar = document.querySelector("#profile-avatar");
+  if (storageGet("co-nino-profile-photo") === "sample") {
+    const image = document.createElement("img");
+    image.src = profilePhotoPath;
+    image.alt = "";
+    avatar.replaceChildren(image);
+    avatar.classList.add("profile-avatar-photo");
+    avatar.setAttribute("aria-label", "Co-NINO profile photo");
+  } else {
+    avatar.textContent = "C";
+    avatar.classList.remove("profile-avatar-photo");
+    avatar.setAttribute("aria-label", "Co-NINO profile");
+  }
+}
+
+function setupPhotos() {
+  const button = document.querySelector("#set-profile-photo");
+  const status = document.querySelector("#photo-status");
+  const selected = storageGet("co-nino-profile-photo") === "sample";
+  button.setAttribute("aria-pressed", String(selected));
+  status.textContent = selected ? "This sample is your profile photo on this device." : "Your profile photo stays on this device.";
+  button.addEventListener("click", () => {
+    const saved = storageSet("co-nino-profile-photo", "sample");
+    if (saved) {
+      updateProfileAvatar();
+      button.setAttribute("aria-pressed", "true");
+      status.textContent = "Profile photo saved on this device.";
+    } else {
+      status.textContent = "This browser couldn't save your profile photo.";
+    }
+  });
+}
+
 function calculate(left, right, operator) {
   if (operator === "+") return left + right;
   if (operator === "−") return left - right;
@@ -361,5 +412,6 @@ function updateClock() {
 const savedTheme = storageGet("co-nino-theme");
 if (["violet", "ocean", "sunset", "forest"].includes(savedTheme)) desktop.dataset.theme = savedTheme;
 buildAppGrids();
+updateProfileAvatar();
 updateClock();
 window.setInterval(updateClock, 30_000);
